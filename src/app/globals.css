@@ -1,107 +1,67 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+@theme {
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-jetbrains-mono);
+  
+  --color-background: #0A0A0A;
+  --color-foreground: #EDEDED;
+  
+  --color-indigo-glow: #6366F1;
+  --color-cyan-glow: #06B6D4;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Base Styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-@keyframes floaty {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -14px, 0);
-  }
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-@keyframes shine {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes glowPulse {
-  0% {
-    opacity: 0.55;
-  }
-  50% {
-    opacity: 0.9;
-  }
-  100% {
-    opacity: 0.55;
-  }
-}
-
+/* Utilities */
 @layer utilities {
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 44px 44px;
+  .glass-panel {
+    @apply backdrop-blur-md bg-white/5 border border-white/10;
   }
-
+  
+  .glass-card {
+    @apply backdrop-blur-xl bg-[#111]/60 border border-white/5 shadow-xl;
+  }
+  
   .text-gradient {
-    background-image: linear-gradient(90deg, #60a5fa, #a78bfa, #22d3ee);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    @apply bg-clip-text text-transparent bg-linear-to-r from-indigo-400 to-cyan-400;
   }
-
-  .text-shimmer {
-    background-image: linear-gradient(
-      90deg,
-      rgba(96, 165, 250, 1),
-      rgba(34, 211, 238, 1),
-      rgba(167, 139, 250, 1),
-      rgba(96, 165, 250, 1)
-    );
-    background-size: 300% 100%;
-    animation: shine 6s ease-in-out infinite;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  
+  .glow-text {
+    text-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
   }
-
-  .blob {
-    filter: blur(42px);
-    animation: floaty 7s ease-in-out infinite;
-  }
-
-  .glow-pulse {
-    animation: glowPulse 4.5s ease-in-out infinite;
+  
+  .grid-bg {
+    background-size: 50px 50px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .text-shimmer,
-  .blob,
-  .glow-pulse {
-    animation: none !important;
-  }
+/* Animations */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
 }
